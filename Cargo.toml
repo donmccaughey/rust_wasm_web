@@ -1,0 +1,6 @@
+[package]
+name = "rust_wasm_web"
+version = "0.1.0"
+authors = ["Don McCaughey <don@donm.cc>"]
+
+[dependencies]
