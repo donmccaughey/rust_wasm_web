@@ -6,8 +6,8 @@ TMP ?= $(abspath tmp)
 .PHONY : all
 all : \
 		$(OUT)/index.html \
-		$(OUT)/web_client.js \
-		$(OUT)/web_client_bg.wasm
+		$(OUT)/web_client_bg.wasm \
+		$(OUT)/web_client.js
 
 
 .PHONY : clean
@@ -20,16 +20,22 @@ clean :
 $(OUT)/index.html : src/index.html | $(OUT)
 	cp $< $@
 
-$(OUT)/web_client.js \
-$(OUT)/web_client_bg.wasm : $(TMP)/wasm-bindgen.stamp.txt
+$(OUT)/web_client_bg.wasm : $(TMP)/web_client_bg.wasm | $(OUT)
+	cp $< $@
+
+$(OUT)/web_client.js : $(TMP)/web_client.js | $(OUT)
+	cp $< $@
+
+$(TMP)/web_client_bg.wasm \
+$(TMP)/web_client.js : $(TMP)/wasm-bindgen.stamp.txt
 	@:
 
-$(TMP)/wasm-bindgen.stamp.txt : $(TARGET)/wasm32-unknown-unknown/debug/web_client.wasm | $(OUT) $(TMP)
+$(TMP)/wasm-bindgen.stamp.txt : $(TARGET)/wasm32-unknown-unknown/debug/web_client.wasm | $(TMP)
 	wasm-bindgen $< \
 		--no-modules \
 		--no-modules-global web_client \
 		--no-typescript \
-		--out-dir $(OUT)
+		--out-dir $(TMP)
 	date > $@
 
 -include $(TARGET)/wasm32-unknown-unknown/debug/web_client.d
