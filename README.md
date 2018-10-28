@@ -61,6 +61,10 @@ To remove generated files, run:
 
     make clean
 
+For a complete list of build options, run:
+
+    make help
+
 ### Running
 
 Unfortunately, current web browsers are unable to load the generated `.wasm`
@@ -68,13 +72,17 @@ file when viewing the provided `index.html` page via a `file:` URL; you need a
 local web server to run the generated web client.
 
 If you have a web server installed, configure it to serve the generated
-`wwwroot` directory. On macOS and most Linux systems, you can use Python's
-`SimpleHTTPServer` to do the trick:
+`wwwroot` directory. You can customize the location of the built web client
+files by specfying `OUT=/my/web/path` on the `make` command line.
+
+On macOS and most Linux systems, you can use Python's `SimpleHTTPServer` to do
+the trick:
 
     cd wwwroot
     python -m SimpleHTTPServer 8000
 
 Where `8000` is the port. The web client will appear at [localhost:8000][61].
+The `make run` target will do this for you.
 
 [61]: http://localhost:8000 "Web Client"
 

@@ -1,4 +1,5 @@
 OUT ?= $(abspath wwwroot)
+PORT ?= 8000
 TARGET ?= $(abspath tmp)
 TMP ?= $(abspath tmp)
 
@@ -10,9 +11,38 @@ all : \
 		$(OUT)/web_client.js
 
 
+.PHONY : help
+help :
+	@printf 'Makefile for https://github.com/donmccaughey/rust_wasm_web\n'
+	@printf '\n'
+	@printf 'Targets:\n'
+	@printf '    all        Build everything (default target)\n'
+	@printf '    run        Build everything and run the web client using\n'
+	@printf "               Python's local web server\n"
+	@printf '    clean      Remove all build output\n'
+	@printf '\n'
+	@printf 'Variables:\n'
+	@printf '    OUT        Path for built web client (default is ./wwwroot)\n'
+	@printf '    PORT       Network port for run target (default is 8000)\n'
+	@printf '    TARGET     Path for cargo build products (default is ./tmp)\n'
+	@printf '    TMP        Path for other build products (default is ./tmp)\n'
+	@printf '\n'
+	@printf 'Examples:\n'
+	@printf '\n'
+	@printf '    make TMP=build OUT=/usr/local/nignx/html/rust_wasm_web\n'
+	@printf '\n'
+	@printf '    make run PORT=1080\n'
+	@printf '\n'
+
+
+.PHONY : run
+run : all
+	cd $(OUT) && python -m SimpleHTTPServer $(PORT) 
+
+
 .PHONY : clean
 clean :
-	cargo clean
+	cargo clean --target-dir $(TARGET)
 	-rm -rf $(OUT)
 	-rm -rf $(TMP)
 
