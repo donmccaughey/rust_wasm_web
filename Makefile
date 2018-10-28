@@ -32,10 +32,9 @@ $(TMP)/wasm-bindgen.stamp.txt : $(TARGET)/wasm32-unknown-unknown/debug/web_clien
 		--out-dir $(OUT)
 	date > $@
 
-$(TARGET)/wasm32-unknown-unknown/debug/web_client.wasm : \
-		Cargo.lock \
-		Cargo.toml \
-		src/lib.rs
+-include $(TARGET)/wasm32-unknown-unknown/debug/web_client.d
+
+$(TARGET)/wasm32-unknown-unknown/debug/web_client.wasm : Cargo.lock Cargo.toml
 	cargo +nightly build \
 		--target wasm32-unknown-unknown \
 		--target-dir $(TARGET)
