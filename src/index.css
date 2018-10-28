@@ -1,0 +1,66 @@
+a:hover {
+    border: 1pt solid gray;
+}
+
+a:visited {
+    color: gray;
+}
+
+a {
+    border: 1pt solid silver;
+    color: black;
+    text-decoration: none;
+}
+
+body, html {
+    background: white;
+    border: 0;
+    color: black;
+    font: 12pt Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    border: 0;
+    margin: 1em auto;
+    max-width: 40em;
+    padding: 0;
+    text-align: center;
+}
+
+h1, h2, h3 {
+    border: 0;
+    font-weight: 400;
+    margin 0.5em 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 18pt;
+}
+
+h2 {
+    font-size: 14pt;
+}
+
+h3 {
+    font-size: 12pt;
+}
+
+header {
+    border: 0;
+    margin: 1em auto;
+    max-width: 40em;
+    padding: 0;
+    text-align: center;
+}
+
+main {
+    border: thin solid silver;
+    margin: 1em auto;
+    max-width: 40em;
+    min-height: 20em;
+    padding: 1em;
+}
+

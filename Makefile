@@ -7,6 +7,7 @@ datetime := $(shell date '+%Y-%m-%dT%H:%M:%S%z')
 
 .PHONY : all
 all : \
+		$(OUT)/index.css \
 		$(OUT)/index.html \
 		$(OUT)/web_client_bg.wasm \
 		$(OUT)/web_client.js
@@ -47,6 +48,9 @@ clean :
 	-rm -rf $(OUT)
 	-rm -rf $(TMP)
 
+
+$(OUT)/index.css : src/index.css | $(OUT)
+	cp $< $@
 
 $(OUT)/index.html : src/index.html | $(OUT)
 	sed \
