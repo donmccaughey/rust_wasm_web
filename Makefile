@@ -3,6 +3,7 @@ PORT ?= 8000
 TARGET ?= $(abspath tmp)
 TMP ?= $(abspath tmp)
 
+datetime := $(shell date '+%Y-%m-%dT%H:%M:%S%z')
 
 .PHONY : all
 all : \
@@ -48,7 +49,9 @@ clean :
 
 
 $(OUT)/index.html : src/index.html | $(OUT)
-	cp $< $@
+	sed \
+		-e s/{{datetime}}/$(datetime)/g \
+		$< > $@
 
 $(OUT)/web_client_bg.wasm : $(TMP)/web_client_bg.wasm | $(OUT)
 	cp $< $@
