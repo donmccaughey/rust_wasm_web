@@ -10,7 +10,7 @@
     <header>
         <h1>Rust Wasm Web Client</h1>
     </header>
-    <main></main>
+    <main id=web-client-container></main>
     <footer>
         <p>
             built on <time datetime={{datetime}}>{{datetime}}</time>
@@ -21,7 +21,7 @@
     <script src=web_client.js></script>
     <script>
         web_client('web_client_bg.wasm')
-            .then(() => web_client.greet('Web Client'));
+            .then(() => web_client.run('web-client-container'));
     </script>
 </body>
 </html>
