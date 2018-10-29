@@ -2,9 +2,13 @@ extern crate js_sys;
 extern crate wasm_bindgen;
 extern crate web_sys;
 
-use web_sys::console;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
+use web_sys::console;
+use web_sys::Event;
+use web_sys::EventTarget;
+use web_sys::HtmlFormElement;
+use web_sys::HtmlInputElement;
 
 
 #[wasm_bindgen]
@@ -26,14 +30,14 @@ pub fn run(container_id: &str) -> Result<(), JsValue> {
         </form>
     ");
 
-    let on_submit = Closure::wrap(Box::new(move |event: web_sys::Event| -> Result<(), JsValue> {
+    let on_submit = Closure::wrap(Box::new(move |event: Event| -> Result<(), JsValue> {
         event.prevent_default();
         let target = event.target()
                 .ok_or_else(|| JsValue::from_str("target not found"))?;
-        let form = target.dyn_ref::<web_sys::HtmlFormElement>()
+        let form: &HtmlFormElement = target.dyn_ref()
                 .ok_or_else(|| JsValue::from_str("target should be an HtmlFormElement"))?;
         let name_object = form.get_with_name("name");
-        let name_input = name_object.dyn_ref::<web_sys::HtmlInputElement>()
+        let name_input: &HtmlInputElement = name_object.dyn_ref()
                 .ok_or_else(|| JsValue::from_str("name should be an HtmlInputElement"))?;
         let value = name_input.value();
         let name = if 0 == value.len() { "no name" } else { &value };
@@ -45,7 +49,7 @@ pub fn run(container_id: &str) -> Result<(), JsValue> {
 
     let form = document.get_element_by_id("form")
             .ok_or_else(|| JsValue::from_str("form not found"))?;
-    (form.as_ref() as &web_sys::EventTarget)
+    (form.as_ref() as &EventTarget)
             .add_event_listener_with_callback("submit", on_submit.as_ref().unchecked_ref())?;
 
     on_submit.forget();
