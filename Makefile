@@ -3,7 +3,8 @@ PORT ?= 8000
 TARGET ?= $(abspath tmp)
 TMP ?= $(abspath tmp)
 
-datetime := $(shell date '+%Y-%m-%dT%H:%M:%S%z')
+datetime := $(shell date '+%d-%b-%Y at %H:%M:%S %Z')
+timestamp := $(shell date -u '+%Y-%m-%dT%H:%M:%S%z')
 
 .PHONY : all
 all : \
@@ -54,7 +55,8 @@ $(OUT)/index.css : src/index.css | $(OUT)
 
 $(OUT)/index.html : src/index.html | $(OUT)
 	sed \
-		-e s/{{datetime}}/$(datetime)/g \
+		-e 's/{{datetime}}/$(datetime)/g' \
+		-e 's/{{timestamp}}/$(timestamp)/g' \
 		$< > $@
 
 $(OUT)/web_client_bg.wasm : $(TMP)/web_client_bg.wasm | $(OUT)
