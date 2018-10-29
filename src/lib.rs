@@ -11,9 +11,12 @@ use wasm_bindgen::JsCast;
 pub fn run(container_id: &str) -> Result<(), JsValue> {
     console::log_2(&"run() start, container_id:".into(), &container_id.into());
 
-    let window = web_sys::window().expect("window not found");
-    let document = window.document().expect("document not found");
-    let container = document.get_element_by_id(container_id).expect("container not found");
+    let window = web_sys::window()
+            .ok_or_else(|| JsValue::from_str("window() failed"))?;
+    let document = window.document()
+            .ok_or_else(|| JsValue::from_str("document not found"))?;
+    let container = document.get_element_by_id(container_id)
+            .ok_or_else(|| JsValue::from_str("container not found"))?;
 
     container.set_inner_html(r"
         <form id=form>
@@ -31,13 +34,13 @@ pub fn run(container_id: &str) -> Result<(), JsValue> {
         let name_input = name_object.dyn_ref::<web_sys::HtmlInputElement>().expect("name_object should be an HtmlInputElement");
         let value = name_input.value();
         let name = if 0 == value.len() { "no name" } else { &value };
-        let message: String = format!("Hello, {}!", name);
+        let message = format!("Hello, {}!", name);
         window.alert_with_message(&message).expect("alert failed");
         console::log_2(&"on_submit said hello to".into(), &name.into());
     }) as Box<Fn(_)>);
 
-    let form = document.get_element_by_id("form").expect("form not found");
-    let form = form.dyn_ref::<web_sys::HtmlElement>().expect("form should be an HtmlElement");
+    let form = document.get_element_by_id("form")
+            .ok_or_else(|| JsValue::from_str("form not found"))?;
     (form.as_ref() as &web_sys::EventTarget)
         .add_event_listener_with_callback("submit", on_submit.as_ref().unchecked_ref())
         .expect("unable to add event listener");
