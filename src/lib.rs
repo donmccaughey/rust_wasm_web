@@ -26,24 +26,27 @@ pub fn run(container_id: &str) -> Result<(), JsValue> {
         </form>
     ");
 
-    let on_submit = Closure::wrap(Box::new(move |event: web_sys::Event| {
+    let on_submit = Closure::wrap(Box::new(move |event: web_sys::Event| -> Result<(), JsValue> {
         event.prevent_default();
-        let target = event.target().expect("target not found");
-        let form = target.dyn_ref::<web_sys::HtmlFormElement>().expect("target should be an HtmlFormElement");
+        let target = event.target()
+                .ok_or_else(|| JsValue::from_str("target not found"))?;
+        let form = target.dyn_ref::<web_sys::HtmlFormElement>()
+                .ok_or_else(|| JsValue::from_str("target should be an HtmlFormElement"))?;
         let name_object = form.get_with_name("name");
-        let name_input = name_object.dyn_ref::<web_sys::HtmlInputElement>().expect("name_object should be an HtmlInputElement");
+        let name_input = name_object.dyn_ref::<web_sys::HtmlInputElement>()
+                .ok_or_else(|| JsValue::from_str("name should be an HtmlInputElement"))?;
         let value = name_input.value();
         let name = if 0 == value.len() { "no name" } else { &value };
         let message = format!("Hello, {}!", name);
-        window.alert_with_message(&message).expect("alert failed");
+        window.alert_with_message(&message)?;
         console::log_2(&"on_submit said hello to".into(), &name.into());
-    }) as Box<Fn(_)>);
+        Ok(())
+    }) as Box<Fn(_) -> _>);
 
     let form = document.get_element_by_id("form")
             .ok_or_else(|| JsValue::from_str("form not found"))?;
     (form.as_ref() as &web_sys::EventTarget)
-        .add_event_listener_with_callback("submit", on_submit.as_ref().unchecked_ref())
-        .expect("unable to add event listener");
+            .add_event_listener_with_callback("submit", on_submit.as_ref().unchecked_ref())?;
 
     on_submit.forget();
 
