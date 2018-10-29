@@ -9,6 +9,8 @@ a:visited {
 a {
     border: 1pt solid silver;
     color: black;
+    padding-left: 1pt;
+    padding-right: 1pt;
     text-decoration: none;
 }
 

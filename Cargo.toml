@@ -8,6 +8,7 @@ crate-type = ["cdylib"]
 name = "web_client"
 
 [dependencies]
+js-sys = "0.3.2"
 wasm-bindgen = "0.2"
 
 [dependencies.web-sys]
@@ -16,6 +17,11 @@ features = [
     "console",
     "Document",
     "Element",
+    "Event",
+    "EventTarget",
+    "HtmlElement",
+    "HtmlFormElement",
+    "HtmlInputElement",
     "Window",
 ]
 
